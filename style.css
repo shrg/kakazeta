@@ -1,0 +1,91 @@
+
+:root{--paper:#f1ece0;--ink:#1b1a17;--mut:#6e685d;--rule:#2a2824;--hair:#d6cfbf;--red:#a8362a;--box:#ebe5d6}
+*{box-sizing:border-box}html{background:var(--paper)}body{margin:0;color:var(--ink);font:16px/1.6 "PT Serif",Georgia,serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}a:hover{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+.w{max-width:1180px;margin:0 auto;padding:22px 48px 64px}
+.sans{font-family:Inter,system-ui,sans-serif}
+.top{display:flex;justify-content:space-between;font:500 11px/1 Inter,sans-serif;letter-spacing:.14em;color:#3d3a34;padding-bottom:10px;border-bottom:1px solid var(--hair)}
+.mast{text-align:center;padding:14px 0 6px}.mast h1{font:700 104px/1 "Playfair Display",Didot,serif;margin:0;letter-spacing:-.01em}
+.tag{text-align:center;font:italic 15px "PT Serif",serif;color:#3d3a34;margin:6px 0 12px}
+.date{display:flex;justify-content:space-between;border-top:3px double var(--rule);border-bottom:2px solid var(--rule);padding:7px 0;font:13px "PT Serif",serif;font-variant:small-caps;letter-spacing:.06em}
+.front{display:grid;grid-template-columns:1.3fr 1fr 300px;gap:0 34px;margin-top:26px;padding-bottom:28px;border-bottom:1px solid var(--rule)}
+.kick{font:600 10.5px/1 Inter,sans-serif;letter-spacing:.14em;color:var(--red);margin-bottom:8px}
+.by{font:500 10.5px/1.5 Inter,sans-serif;letter-spacing:.1em;color:var(--mut);margin-top:10px}.by a.cm{color:var(--red)}
+.lead h2{font:700 42px/1.08 "Playfair Display",serif;margin:0 0 18px;letter-spacing:-.005em}
+.second h3{font:700 27px/1.15 "Playfair Display",serif;margin:0 0 14px}
+.body{font-size:15.5px;line-height:1.65;margin:0;color:#2a2824}
+.drop::first-letter{float:left;font:700 64px/.82 "Playfair Display",serif;padding:6px 10px 0 0}
+.second{padding-bottom:16px;border-bottom:1px solid var(--rule)}
+.brief{padding:12px 0;border-bottom:1px solid var(--hair)}.brief h4{font:700 15.5px/1.35 "PT Serif",serif;margin:0}.brief .by{margin-top:4px}
+.side .boxx{border:1px solid #6e685d;background:var(--box);padding:14px 14px 10px;margin-bottom:22px}
+.boxx h6{font:600 11px/1 Inter,sans-serif;letter-spacing:.14em;margin:0 0 10px;padding-bottom:9px;border-bottom:1px solid var(--rule)}
+.boxx ol{list-style:none;margin:0;padding:0}.boxx li{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--hair);font:13.5px/1.35 "PT Serif",serif}.boxx li:last-child{border:0}
+.boxx .n{color:var(--red);font:700 14px "Playfair Display",serif;min-width:12px}.boxx small{display:block;font:11.5px/1.4 Inter,sans-serif;color:var(--mut);margin-top:3px}
+.row{display:flex;justify-content:space-between;font:12.5px Inter,sans-serif;padding:7px 0;border-bottom:1px solid var(--hair)}.row:last-child{border:0}.row b{font-weight:600}
+.desks{columns:3;column-gap:34px;column-rule:1px solid var(--hair);margin-top:26px}
+.desk{break-inside:auto}.deskhead{break-after:avoid;display:flex;justify-content:space-between;align-items:baseline;border-top:2px solid var(--rule);border-bottom:1px solid var(--rule);padding:6px 0;margin:0 0 4px;font:700 19px "Playfair Display",serif}
+.deskhead i{font:500 11px Inter,sans-serif;color:var(--mut);font-style:normal}
+.story{break-inside:avoid;padding:12px 0 14px;border-bottom:1px solid var(--hair)}.story h5{font:700 17px/1.3 "PT Serif",serif;margin:0}
+.story p{font-size:14px;line-height:1.55;margin:6px 0 0;color:#3d3a34;}
+
+.fig{display:block;margin:0 0 16px;border:1px solid var(--hair);background:#e4dccb;overflow:hidden}.fig img{display:block;width:100%;object-fit:cover;filter:sepia(.18) contrast(1.04) saturate(.85)}
+.fig.big img{aspect-ratio:16/9}.fig.mid img{aspect-ratio:16/9}.fig:hover img{filter:none}
+.thumb{float:right;width:92px;height:68px;margin:2px 0 6px 12px;border:1px solid var(--hair);overflow:hidden;background:#e4dccb}.thumb img{width:100%;height:100%;object-fit:cover;filter:sepia(.18) saturate(.85)}
+.brief::after,.story::after{content:"";display:block;clear:both}
+footer{margin-top:34px;border-top:3px double var(--rule);padding-top:10px;font:11px/1.6 Inter,sans-serif;color:var(--mut);letter-spacing:.03em}
+@media (max-width:1000px){.front{grid-template-columns:1fr}.desks{columns:2}.mast h1{font-size:64px}}
+@media (max-width:680px){.desks{columns:1}}
+
+/* --- Каказета: добавления к стилям morning-tab --- */
+.src{font:500 10.5px/1.7 Inter,sans-serif;letter-spacing:.08em;color:var(--mut);margin-top:9px;text-transform:uppercase}
+.src a{color:#3d3a34;border-bottom:1px solid var(--hair)}.src a:hover{text-decoration:none;border-bottom-color:var(--red);color:var(--red)}
+.wkday{padding:8px 0;border-bottom:1px solid var(--hair);font:13.5px/1.45 "PT Serif",serif}.wkday b{display:block;font:600 10.5px/1.4 Inter,sans-serif;letter-spacing:.12em;color:var(--red);text-transform:uppercase;margin-bottom:2px}
+.verdict{font:italic 13.5px/1.5 "PT Serif",serif;margin:10px 0 2px;color:#3d3a34}
+@media (max-width:600px){
+ .w{padding:14px 16px 40px}.top{font-size:10px}.mast h1{font-size:46px}.tag{font-size:14px}
+ .date{flex-direction:column;align-items:center;gap:2px;text-align:center}
+ .lead h2{font-size:30px!important}.second h3{font-size:23px}.front{gap:0;margin-top:18px}
+ .side{margin-top:22px}.thumb{width:78px;height:58px}
+}
+.top span:first-child,.boxx h6{text-transform:uppercase}
+.lead .src{margin-bottom:22px}
+.wk{margin-top:6px}
+/* телефон и планшет: колонки раскладываются в один поток, порядок задаём явно */
+@media (max-width:1000px){
+ .front>.c1,.front>.c2,.front>aside{display:contents}
+ .page{display:flex;flex-direction:column}.front{display:contents}
+ .lead{order:1;margin-bottom:22px}.dg{order:2}.second{order:3}.brief{order:4}.desks{order:5}.wk{order:6}.al{order:7}
+ .desks{width:100%;margin:6px 0 28px;padding-top:22px;border-top:1px solid var(--rule)}
+}
+.front .boxx{border:1px solid #6e685d;background:var(--box);padding:14px 14px 10px;margin-bottom:22px}
+.front .wk{margin-top:0}
+
+/* адаптив: ничего не вылезает за экран */
+html{-webkit-text-size-adjust:100%}
+body{overflow-wrap:anywhere}
+img{max-width:100%;height:auto}
+.desk{break-inside:avoid-column}
+@media (max-width:360px){.mast h1{font-size:38px}.w{padding:12px 12px 32px}}
+@media (min-width:1500px){.w{max-width:1280px}}
+@media (min-width:601px) and (max-width:1000px){.fig.big img,.fig.mid img{width:100%;max-height:340px;object-fit:cover}}
+
+.brief .bsum{font:14px/1.55 "PT Serif",serif;margin:6px 0 0;color:#3d3a34}
+.lead .body+.body{margin-top:12px}
+.side .wk{margin-bottom:22px}
+
+/* дата-кнопка выглядит как обычный текст; календарь архива */
+.dt{all:unset;cursor:pointer;font:inherit;font-variant:inherit;letter-spacing:inherit;color:inherit}
+.dt:focus-visible{outline:1px dotted var(--mut);outline-offset:3px}
+.date{position:relative}
+.cal{position:absolute;z-index:20;left:max(16px,calc(50% - 160px));top:calc(100% + 8px);width:min(320px,calc(100vw - 32px));background:var(--box);border:1px solid #6e685d;box-shadow:0 8px 24px rgba(0,0,0,.18);padding:12px 14px 14px;font:14px "PT Serif",serif}
+.cal[hidden]{display:none}
+.ch{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--hair);padding-bottom:8px;margin-bottom:8px}
+.ch b{font:600 12px Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase}
+.ch button{all:unset;cursor:pointer;font:20px/1 "PT Serif",serif;padding:2px 10px}
+.cg{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;gap:2px}
+.cg i{font:500 10px Inter,sans-serif;color:var(--mut);padding:4px 0;font-style:normal;text-transform:uppercase}
+.cg span,.cg a{padding:7px 0;color:#b3ab9b}
+.cg a.on{color:#1d1b17;font-weight:700;border-bottom:1px solid var(--hair);text-decoration:none}
+.cg a.on:hover{background:#e4dccb}.cg a.cur{outline:1px solid var(--red);outline-offset:-2px}
+
+/* первая полоса: главная, вторая и короткие текут в две колонки, браузер сам выравнивает высоту */
