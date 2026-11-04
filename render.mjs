@@ -18,6 +18,11 @@ const L = {
   ...cfg.labels,
 };
 
+// ---- чистка текста: Markdown в газету не попадает
+const clean = (t) => String(t || "").replace(/\[([^\]]+)\]\((?:https?:\/\/)[^)]*\)/g, "$1").replace(/\*\*|__|`/g, "").replace(/^#+\s*/gm, "").replace(/[ \t]+\n/g, "\n").trim();
+for (const i of (Array.isArray(issue.items) ? issue.items : [])) { i.title = clean(i.title); i.summary = clean(i.summary); }
+issue.leadParagraph = clean(issue.leadParagraph);
+for (const d of (Array.isArray(issue.digest) ? issue.digest : [])) d.text = clean(d.text);
 const paras = (t) => String(t || "").split(/\n\s*\n/).map((x) => x.trim()).filter(Boolean);
 // ---- проверка входных данных: падаем громко, чтобы не выпустить сломанную страницу
 const errs = [];
@@ -47,10 +52,26 @@ const issueNo = errs.length ? 0 : Math.round((dayMs(issue.issueDate) - dayMs(cfg
 if (!errs.length && issueNo < 1) errs.push(`issueDate раньше firstIssueDate: номер ${issueNo}`);
 const easy = items.filter((i) => i.easy);
 if (easy.length < 1) warns.push("нет ни одного изи-ньюз (по правилам нужно 1–2)");
-const thin = (n, min, what) => { if (n < min) warns.push(what); };
-thin(paras(issue.leadParagraph).join(" ").length, 500, `главная новость: текст ${paras(issue.leadParagraph).join(" ").length} знаков, нужно от 500 (5–8 предложений)`);
-if (issue.secondId) thin(byId.get(issue.secondId).summary.length, 300, `вторая новость: summary короче 300 знаков`);
-for (const i of items) if (i.id !== issue.leadId && i.id !== issue.secondId) thin(i.summary.length, i.easy ? 120 : 180, `${i.id}: summary короче ${i.easy ? 120 : 180} знаков, суть не передана`);
+
+// ---- объём текста: потолки жёсткие (ошибка, редактор обязан сократить), минимумы мягкие (предупреждение)
+const LIM = { lead: [500, 900], second: [300, 450], brief: [200, 350], story: [200, 350], easy: [250, 450], digest: [0, 110], ...cfg.limits };
+const range = (n, [min, max], what) => { if (n > max) errs.push(`${what}: ${n} знаков, потолок ${max}. Сократи, оставь суть`); else if (n < min) warns.push(`${what}: ${n} знаков, меньше ${min}`); };
+// ---- стоп-лист: разговор о процессе работы журналиста в газете недопустим
+const STOP = [/не\s+открыв/i, /не\s+открыл/i, /не\s+открыт/i, /не\s+удалось\s+(открыть|прочитать|проверить)/i, /тексты?\s+не\s+(открыт|прочит)/i, /по\s+заголовк/i, /по\s+сниппет/i, /неофициальн/i, /(^|\s)Что\s+дальше\s*:/i, /(^|\s)Статус\s*:/i, /Для\s+читателя/i, /(^|\s)(Совет|Рекомендуем|Советуем|Что\s+делать)\s*:?/i, /источник\S*\s+(недоступ|закрыт|не\s+отвеча)/i, /paywall/i, /\]\(|\bhttps?:\/\//i];
+const stop = (t, what) => { for (const re of STOP) { const m = String(t).match(re); if (m) { errs.push(`${what}: служебная или недопустимая фраза «${m[0].trim()}». Перепиши по-газетному`); break; } } };
+const leadLen = paras(issue.leadParagraph).join(" ").length;
+range(leadLen, LIM.lead, "главная новость");
+if (paras(issue.leadParagraph).length > 2) errs.push("главная новость: не больше 2 абзацев");
+stop(issue.leadParagraph, "главная новость");
+if (issue.secondId) range(byId.get(issue.secondId).summary.length, LIM.second, "вторая новость");
+for (const i of items) {
+  stop(i.title, `${i.id} заголовок`); stop(i.summary, `${i.id} текст`);
+  if (i.id === issue.leadId || i.id === issue.secondId) continue;
+  range(i.summary.length, i.easy ? LIM.easy : LIM.story, `${i.id}`);
+}
+for (const d of dg) { stop(d.text, `digest ${d.id}`); range(d.text.length, LIM.digest, `digest ${d.id}`); }
+const leadItem = byId.get(issue.leadId);
+if (leadItem && !leadItem.image) warns.push("у главной новости нет фото (image)");
 const st = issue.staff;
 if (!st || !Number.isInteger(st.active) || !Number.isInteger(st.reported) || st.reported > st.active || st.active < 0) warns.push("staff: нужны целые active и reported (reported ≤ active); служебная строка не выведена");
 if (!issue.weekend) warns.push("нет блока weekend");
@@ -68,7 +89,7 @@ const w = issue.weather;
 const weather = w ? `${w.place}: ${Math.round(w.temp)}°${w.max != null ? `, ${L.dayUpTo} ${Math.round(w.max)}°` : ""}` : "";
 const kick = (i) => esc(i.easy ? L.easy : i.rubric).toUpperCase();
 const link = (i, inner) => `<a href="${esc(i.sources[0].url)}" target="_blank" rel="noopener">${inner}</a>`;
-const src = (i) => `<div class="src">${esc(L.sources)}: ${i.sources.map((s) => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)}</a>`).join(" · ")}</div>`;
+const src = (i) => `<div class="src">${esc(L.sources)}: ${i.sources.map((s) => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)}</a>`).join("")}</div>`;
 const IMG = (i, cls) => i.image ? `<a class="${cls}" href="${esc(i.sources[0].url)}" target="_blank" rel="noopener"><img src="${esc(i.image)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentElement.remove()"></a>` : "";
 
 // ---- первая полоса: главная, вторая и короткие. Изи-ньюз в неё не попадает.

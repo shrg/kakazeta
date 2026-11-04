@@ -89,3 +89,25 @@ img{max-width:100%;height:auto}
 .cg a.on:hover{background:#e4dccb}.cg a.cur{outline:1px solid var(--red);outline-offset:-2px}
 
 /* первая полоса: главная, вторая и короткие текут в две колонки, браузер сам выравнивает высоту */
+
+/* правки по итогам выпуска №1 */
+.src{display:flex;flex-wrap:wrap;gap:2px 14px}
+.src a{border-bottom:1px solid var(--hair)}
+.date{margin-bottom:0}
+.front{margin-top:30px}
+@media (max-width:1000px){.lead{margin-top:6px}}
+/* фото главной и второй: крупно, единый формат */
+.fig.big img,.fig.mid img{aspect-ratio:16/9;height:auto}
+.fig{margin-bottom:14px}
+/* миниатюры одного формата: в коротких новостях справа, в рубриках сверху на всю колонку */
+.brief .thumb{width:118px;height:88px}
+.story .thumb{float:none;display:block;width:100%;height:auto;margin:0 0 10px;aspect-ratio:3/2}
+.story .thumb img{height:100%}
+@media (max-width:600px){.brief .thumb{width:96px;height:72px}}
+.brief:has(.thumb){display:grid;grid-template-columns:1fr 118px;gap:0 14px;align-items:start}
+.brief:has(.thumb)>*{grid-column:1}.brief:has(.thumb)>.thumb{grid-column:2;grid-row:1/span 4;float:none;margin:2px 0 0;width:118px;height:88px}
+.brief:has(.thumb)::after{display:none}
+.story .thumb{aspect-ratio:16/10;max-height:150px}
+@media (max-width:600px){.brief:has(.thumb){grid-template-columns:1fr 96px}.brief:has(.thumb)>.thumb{width:96px;height:72px}}
+/* узкие колонки десктопа: фото коротких новостей сверху, как в рубриках */
+@media (min-width:1001px){.brief:has(.thumb){display:block}.brief:has(.thumb)>.thumb{display:block;width:100%;height:auto;aspect-ratio:16/10;max-height:150px;margin:0 0 10px}.brief:has(.thumb)::after{display:block}}
