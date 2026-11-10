@@ -46,12 +46,13 @@ if (issue.secondId && !byId.has(issue.secondId)) errs.push(`secondId не най
 const dg = Array.isArray(issue.digest) ? issue.digest : [];
 if (dg.length < cfg.digestMin || dg.length > cfg.digestMax) errs.push(`digest: нужно ${cfg.digestMin}–${cfg.digestMax} пунктов, сейчас ${dg.length}`);
 for (const d of dg) if (!byId.has(d.id) || !d.text?.trim()) errs.push(`digest: неизвестный id или пустой text: ${d.id}`);
+{ const seen = new Set(); for (const d of dg) { if (seen.has(d.id)) errs.push(`digest: новость ${d.id} встречается больше одного раза, один пункт на новость`); seen.add(d.id); } }
 if (!/^\d{4}-\d{2}-\d{2}$/.test(issue.issueDate || "")) errs.push("issueDate должен быть YYYY-MM-DD");
 const dayMs = (s) => { const [y, m, d] = s.split("-").map(Number); return Date.UTC(y, m - 1, d); };
 const issueNo = errs.length ? 0 : Math.round((dayMs(issue.issueDate) - dayMs(cfg.firstIssueDate)) / 86400000) + 1;
 if (!errs.length && issueNo < 1) errs.push(`issueDate раньше firstIssueDate: номер ${issueNo}`);
 const easy = items.filter((i) => i.easy);
-if (easy.length < 1) warns.push("нет ни одного изи-ньюз (по правилам нужно 1–2)");
+if (easy.length < 1) errs.push("нет ни одного изи-ньюз (по правилам 1–2 в каждом выпуске): прочитай вид «Запас» и добавь");
 
 // ---- объём текста: потолки жёсткие (ошибка, редактор обязан сократить), минимумы мягкие (предупреждение)
 const LIM = { lead: [500, 900], second: [300, 450], brief: [200, 350], story: [200, 350], easy: [250, 450], digest: [0, 110], ...cfg.limits };
